@@ -1,0 +1,28 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Product {
+  id               Int      @id @default(autoincrement())
+  name             String
+  price            Float  
+  description      String        
+  productRating    Float
+  offerExpires     DateTime
+  measurement      String
+  productOff       String
+  originalPrice    Float
+  offerPrice       Float
+  productCategory  String
+  isNewProduct     Boolean
+  productImages    Json     // To store an array of images
+  colors            Json     // To store an array of color options
+  reviews          Json     // To store an array of reviews
+  productDescription String?
+  additionalInfo   Json     // To store additionalInfo and packaging details as a JSON object
+}
