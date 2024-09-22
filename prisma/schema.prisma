@@ -9,9 +9,8 @@ generator client {
 
 model Product {
   id               Int      @id @default(autoincrement())
-  name             String
-  price            Float  
-  description      String        
+  productName      String   // Renamed from 'name'
+  productImages    Json     // Stores array of images (e.g., imageId, imageUrl)
   productRating    Float
   offerExpires     DateTime
   measurement      String
@@ -20,9 +19,9 @@ model Product {
   offerPrice       Float
   productCategory  String
   isNewProduct     Boolean
-  productImages    Json     // To store an array of images
-  colors            Json     // To store an array of color options
-  reviews          Json     // To store an array of reviews
-  productDescription String?
-  additionalInfo   Json     // To store additionalInfo and packaging details as a JSON object
+  color            Json     // Stores array of colors and their associated images
+  productDescription String? // Added optional description of the product
+  additionalInfo   Json     // Stores additional info like details, packaging as a JSON object
+  reviews          Json     // Stores array of reviews (e.g., customerName, rating, comment, customerImage)
 }
+
