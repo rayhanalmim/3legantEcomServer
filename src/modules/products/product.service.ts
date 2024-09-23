@@ -1,8 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
+import catchAsync from "../../utils/catchAsync";
 const prisma = new PrismaClient();
 
-const createProducts = async (req: Request, res: Response) => {
+const createProducts = catchAsync(async (req: Request, res: Response) => {
     const {
         productName,
         productImages,
@@ -20,60 +21,47 @@ const createProducts = async (req: Request, res: Response) => {
         reviews,
     } = req.body;
 
-    try {
-        const newProduct = await prisma.product.create({
-            data: {
-                productName,
-                productImages: JSON.stringify(productImages), 
-                productRating: parseFloat(productRating), 
-                offerExpires: new Date(offerExpires), 
-                measurement,
-                productOff,
-                originalPrice: parseFloat(originalPrice), 
-                offerPrice: parseFloat(offerPrice), 
-                productCategory,
-                isNewProduct: Boolean(isNewProduct), 
-                color: JSON.stringify(color), 
-                productDescription,
-                additionalInfo: JSON.stringify(additionalInfo), 
-                reviews: JSON.stringify(reviews), 
-            },
-        });
-        res.json(newProduct);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to create product' });
-    }
-}
+    const newProduct = await prisma.product.create({
+        data: {
+            productName,
+            productImages: JSON.stringify(productImages),
+            productRating: parseFloat(productRating),
+            offerExpires: new Date(offerExpires),
+            measurement,
+            productOff,
+            originalPrice: parseFloat(originalPrice),
+            offerPrice: parseFloat(offerPrice),
+            productCategory,
+            isNewProduct: Boolean(isNewProduct),
+            color: JSON.stringify(color),
+            productDescription,
+            additionalInfo: JSON.stringify(additionalInfo),
+            reviews: JSON.stringify(reviews),
+        },
+    });
+    res.json(newProduct);
+});
+
+const GetProducts = catchAsync(async (req: Request, res: Response) => {
+    const products = await prisma.product.findMany();
+    res.json(products);
+});
 
 
-const GetProducts = async (req: Request, res: Response) => {
-    try {
-        const products = await prisma.product.findMany();
-        res.json(products);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch products' });
-    }
-};
-
-const GetSingleProducts = async (req: Request, res: Response) => {
+const GetSingleProducts = catchAsync(async (req, res) => {
     const { id } = req.params;
-    try {
-        const product = await prisma.product.findUnique({
-            where: { id: parseInt(id) },
-        });
-        if (product) {
-            res.json(product);
-        } else {
-            res.status(404).json({ error: 'Product not found' });
-        }
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch product' });
+    const product = await prisma.product.findUnique({
+        where: { id: parseInt(id) },
+    });
+    if (product) {
+        res.json(product);
+    } else {
+        res.status(404).json({ error: 'Product not found' });
     }
-}
+});
 
 
-const UpdateProduct = async (req: Request, res: Response) => {
+const UpdateProduct = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const {
         productName,
@@ -109,29 +97,20 @@ const UpdateProduct = async (req: Request, res: Response) => {
     if (additionalInfo !== undefined) updateData.additionalInfo = JSON.stringify(additionalInfo);
     if (reviews !== undefined) updateData.reviews = JSON.stringify(reviews);
 
-    try {
-        const updatedProduct = await prisma.product.update({
-            where: { id: parseInt(id) },
-            data: updateData,
-        });
-        res.json(updatedProduct);
-    } catch (error) {
-        console.error("Update Error:", error); // Log error for debugging
-        res.status(500).json({ error: 'Failed to update product' });
-    }
-}
+    const updatedProduct = await prisma.product.update({
+        where: { id: parseInt(id) },
+        data: updateData,
+    });
+    res.json(updatedProduct);
+});
 
-const DeleteProducts = async (req: Request, res: Response) => {
+const DeleteProducts = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
-    try {
-        const deletedProduct = await prisma.product.delete({
-            where: { id: parseInt(id) },
-        });
-        res.json(deletedProduct);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to delete product' });
-    }
-}
+    const deletedProduct = await prisma.product.delete({
+        where: { id: parseInt(id) },
+    });
+    res.json(deletedProduct);
+});
 
 export const ProductsController = {
     createProducts,
