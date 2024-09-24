@@ -25,3 +25,25 @@ model Product {
   reviews          Json     // Stores array of reviews (e.g., customerName, rating, comment, customerImage)
 }
 
+model User {
+  id                  Int       @id @default(autoincrement())
+  name                String
+  email               String    @unique
+  password            String
+  profileImage        String?   // Optional profile image field
+  totalPurchasesAmount Int      @default(0) // Total amount the user has spent
+  totalPurchases      Json      @default("[]") // Array of purchase IDs in JSON format
+  cardInfo            Json      @default("[]") // Array of Stripe card info in JSON format
+  address             Json?     @default("{}") // Shipping or billing addresses
+  phoneNumber         String?   // User's phone number
+  isVerified          Boolean   @default(false) // Email verification status
+  role                Role      @default(USER) // User role: Admin or User
+  wishlist            Json?     @default("[]") // Wishlist for saved products
+  lastLogin           DateTime? // Last login timestamp
+  createdAt           DateTime  @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
