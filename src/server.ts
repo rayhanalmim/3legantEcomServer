@@ -1,6 +1,7 @@
 import cors from 'cors';
 import express, { Request, Response } from 'express';
 import { ProductRoutes } from './modules/products/product.route';
+import { UserRoute } from './modules/users/user.route';
 
 const app = express();
 const port = 5000;
@@ -9,6 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api", ProductRoutes);
+app.use("/api", UserRoute);
 
 // Root route
 app.get('/', (req: Request, res: Response) => {
