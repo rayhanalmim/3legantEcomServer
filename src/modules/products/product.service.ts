@@ -24,7 +24,7 @@ const createProducts = catchAsync(async (req: Request, res: Response) => {
     const newProduct = await prisma.product.create({
         data: {
             productName,
-            productImages: JSON.stringify(productImages),
+            productImages,
             productRating: parseFloat(productRating),
             offerExpires: new Date(offerExpires),
             measurement,
@@ -33,10 +33,10 @@ const createProducts = catchAsync(async (req: Request, res: Response) => {
             offerPrice: parseFloat(offerPrice),
             productCategory,
             isNewProduct: Boolean(isNewProduct),
-            color: JSON.stringify(color),
+            color,
             productDescription,
-            additionalInfo: JSON.stringify(additionalInfo),
-            reviews: JSON.stringify(reviews),
+            additionalInfo,
+            reviews,
         },
     });
     res.json(newProduct);
