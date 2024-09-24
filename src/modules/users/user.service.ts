@@ -42,22 +42,27 @@ const Registration = catchAsync(async (req, res) => {
 
 
 const LogIn = catchAsync(async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  const { emailOrUsername, password } = req.body;
 
-  // Check if the user exists
-  const user = await prisma.user.findUnique({
-    where: { email }
+  // Check if the user exists by email or username
+  const user = await prisma.user.findFirst({
+    where: {
+      OR: [
+        { email: emailOrUsername },
+        { username: emailOrUsername }
+      ]
+    }
   });
 
   if (!user) {
-    return res.status(400).json({ message: "Invalid email or password." });
+    return res.status(400).json({ message: "Invalid email/username or password." });
   }
 
   // Compare the passwords
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
-    return res.status(400).json({ message: "Invalid email or password." });
+    return res.status(400).json({ message: "Invalid email/username or password." });
   }
 
   // Generate JWT token
@@ -65,6 +70,7 @@ const LogIn = catchAsync(async (req: Request, res: Response) => {
 
   return res.status(200).json({ message: "Login successful", token, user });
 });
+
 
 
 export const UserServices = {
