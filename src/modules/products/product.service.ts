@@ -1,9 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { Request, Response } from "express";
 import catchAsync from "../../utils/catchAsync";
 const prisma = new PrismaClient();
 
-const createProducts = catchAsync(async (req: Request, res: Response) => {
+const createProducts = catchAsync(async (req, res) => {
     const {
         productName,
         productImages,
@@ -42,7 +41,7 @@ const createProducts = catchAsync(async (req: Request, res: Response) => {
     res.json(newProduct);
 });
 
-const GetProducts = catchAsync(async (req: Request, res: Response) => {
+const GetProducts = catchAsync(async (req, res) => {
     const products = await prisma.product.findMany();
     res.json(products);
 });
@@ -61,7 +60,7 @@ const GetSingleProducts = catchAsync(async (req, res) => {
 });
 
 
-const UpdateProduct = catchAsync(async (req: Request, res: Response) => {
+const UpdateProduct = catchAsync(async (req, res) => {
     const { id } = req.params;
     const {
         productName,
@@ -104,7 +103,7 @@ const UpdateProduct = catchAsync(async (req: Request, res: Response) => {
     res.json(updatedProduct);
 });
 
-const DeleteProducts = catchAsync(async (req: Request, res: Response) => {
+const DeleteProducts = catchAsync(async (req, res) => {
     const { id } = req.params;
     const deletedProduct = await prisma.product.delete({
         where: { id: parseInt(id) },
