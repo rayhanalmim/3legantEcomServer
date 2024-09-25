@@ -5,7 +5,7 @@ import { UserRoute } from './modules/users/user.route';
 import { WishlistRoute } from './modules/wishList/wishlist.route';
 
 const app = express();
-const port = 5000;
+const port = 3013;
 
 app.use(express.json());
 app.use(cors());

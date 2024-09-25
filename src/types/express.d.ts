@@ -7,6 +7,7 @@ declare global {
                 id: number; // Adjust based on your user object structure
                 // Add any other properties of your user object that you might need
                 userId: number;
+                email: string; // Include the email field
             };
         }
     }

@@ -6,6 +6,8 @@ const addToWishlist = catchAsync(async (req, res) => {
     const userId = req.user?.userId; // Safely extract userId
     const {  productId } = req.body;
 
+    console.log('user Credential', userId, productId);
+
     // Find the user
     const user = await prisma.user.findUnique({ where: { id: userId } });
 
@@ -18,7 +20,7 @@ const addToWishlist = catchAsync(async (req, res) => {
 
     // Check if the product ID already exists in the wishlist
     if (currentWishlist.includes(productId)) {
-        return res.status(404).json({ error: 'Product already in wishlist' });
+        return res.status(400).json({ error: 'Product already in wishlist' });
     }
 
     // Check if the product exists in the database

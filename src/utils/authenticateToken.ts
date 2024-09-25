@@ -12,6 +12,7 @@ interface AuthenticatedRequest extends Request {
 const authenticateToken = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader?.split(' ')[1]; // Bearer <token>
+    console.log('from auth header: ', authHeader);
 
     if (!token) {
         return res.status(401).json({ message: 'Access denied, token missing.' });
