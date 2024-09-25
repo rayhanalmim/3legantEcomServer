@@ -41,7 +41,7 @@ const Registration = catchAsync(async (req, res) => {
 });
 
 
-const LogIn = catchAsync(async (req: Request, res: Response) => {
+const LogIn = catchAsync(async (req, res) => {
   const { emailOrUsername, password } = req.body;
 
   // Check if the user exists by email or username
