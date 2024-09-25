@@ -17,7 +17,16 @@ const addToWishlist = catchAsync(async (req, res) => {
 
     // Check if the product ID already exists in the wishlist
     if (currentWishlist.includes(productId)) {
-        return res.status(400).json({ error: 'Product already in wishlist' });
+        return res.status(404).json({ error: 'Product already in wishlist' });
+    }
+
+    // Check if the product exists in the database
+    const productExists = await prisma.product.findUnique({
+        where: { id: productId },
+    });
+
+    if (!productExists) {
+        return res.status(404).json({ error: `Product not found with ID: ${productId}` });
     }
 
     // Add the new product ID to the wishlist array
