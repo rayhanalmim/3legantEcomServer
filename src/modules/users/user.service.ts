@@ -1,11 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import { Request, Response } from "express";
-import catchAsync from "../../utils/catchAsync";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import catchAsync from "../../utils/catchAsync";
 const prisma = new PrismaClient();
 
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
+const JWT_SECRET = '01845fa9e963534a6b29ae6d1bab1de090be158183e262494c2d59b51597bdb7c7ea3073d1c8fbdfcaf7b676305dfd9aedd7aa65cccef4fcaf20d7b9263e7264';
 
 const Registration = catchAsync(async (req, res) => {
   const { name, email, password, profileImage, username } = req.body;

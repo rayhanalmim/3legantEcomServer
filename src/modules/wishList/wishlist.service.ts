@@ -3,7 +3,8 @@ import catchAsync from "../../utils/catchAsync";
 const prisma = new PrismaClient();
 
 const addToWishlist = catchAsync(async (req, res) => {
-    const { userId, productId } = req.body;
+    const userId = req.user?.userId; // Safely extract userId
+    const {  productId } = req.body;
 
     // Find the user
     const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -43,11 +44,13 @@ const addToWishlist = catchAsync(async (req, res) => {
 
 
 
-const getWishlist = catchAsync(async (req, res) => {
-    const { userId } = req.params;
+const getWishlist = catchAsync(async  (req, res) => {
+    const userId = req.user?.userId; // Safely extract userId
+
+    console.log('from server : ', userId);
 
     // Find the user
-    const user = await prisma.user.findUnique({ where: { id: parseInt(userId) } });
+    const user = await prisma.user.findUnique({ where: { id: userId } });
 
     if (!user) {
         return res.status(404).json({ error: 'User not found' });
@@ -71,7 +74,8 @@ const getWishlist = catchAsync(async (req, res) => {
 
 
 const removeFromWishlist = catchAsync(async (req, res) => {
-    const { userId, productId } = req.body;
+    const { productId } = req.body;
+    const userId = req.user?.userId; // Safely extract userId
 
     // Find the user
     const user = await prisma.user.findUnique({ where: { id: userId } });
