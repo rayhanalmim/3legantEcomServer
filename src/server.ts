@@ -4,6 +4,7 @@ import { ProductRoutes } from './modules/products/product.route';
 import { EmailRoute } from './modules/sendingEmail/email.route';
 import { UserRoute } from './modules/users/user.route';
 import { WishlistRoute } from './modules/wishList/wishlist.route';
+import { PaymentRoute } from './modules/payment/payment.route';
 
 const app = express();
 const port = 3013;
@@ -15,6 +16,7 @@ app.use("/api", ProductRoutes);
 app.use("/api", UserRoute);
 app.use("/api", WishlistRoute);
 app.use("/api", EmailRoute);
+app.use("/payment", PaymentRoute);
 
 // Root route
 app.get('/', (req: Request, res: Response) => {
