@@ -1,13 +1,11 @@
 import { PrismaClient } from "@prisma/client";
-import nodemailer from "nodemailer";
-import config from "../../config";
 import catchAsync from "../../utils/catchAsync";
-import axios from "axios";
 const prisma = new PrismaClient();
+const SSLCommerzPayment = require('sslcommerz-lts'); // Use appropriate SSLCommerz package 
 
 // backend/sslcommerzController.js
-const store_id = "your_store_id";
-const store_passwd = "your_store_password";
+const store_id = "cattl6519ad5ac55ab";
+const store_passwd = "cattl6519ad5ac55ab@ssl";
 const is_live = false; // Set true if you're using the production server
 
 
@@ -20,7 +18,7 @@ const initiateSSLPayment = catchAsync(async (req, res) => {
         tran_id: 'transaction_' + new Date().getTime(), // unique transaction ID
         success_url: 'http://localhost:3000/payment/success',
         fail_url: 'http://localhost:3000/payment/fail',
-        cancel_url: 'http://localhost:3000/payment/cancel',
+        cancel_url: `http://localhost:3000//checkout`,
         ipn_url: 'http://localhost:3000/payment/ipn',
         product_name: 'E-commerce Product',
         cus_name: req.body.name,
@@ -28,17 +26,27 @@ const initiateSSLPayment = catchAsync(async (req, res) => {
         cus_phone: req.body.phone,
         cus_add1: req.body.address,
         cus_city: req.body.city,
+
+        // Add shipping_method field
+        shipping_method: 'NO', // or 'Courier', 'Air', etc., based on your use case
+        product_category: 'Electronic',
+        product_profile: 'general',
+
+        // Add this field to encourage web view
+        multi_card_name: 'internetbanking,master,visa,amex',
+
     };
 
     try {
-        const sslczResponse = await axios.post(
-            `https://${is_live ? 'securepay.sslcommerz.com' : 'sandbox.sslcommerz.com'}/gwprocess/v4/api.php`,
-            paymentData
-        );
-        
-        if (sslczResponse.data && sslczResponse.data.GatewayPageURL) {
-            // Redirect to the SSLCommerz payment gateway
-            res.redirect(sslczResponse.data.GatewayPageURL);
+        const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
+        const sslczResponse = await sslcz.init(paymentData);
+
+        console.log(sslczResponse);
+
+        if (sslczResponse.GatewayPageURL) {
+            // Redirect to SSLCommerz Gateway URL
+            res.json({ url: sslczResponse.GatewayPageURL });
+
         } else {
             res.status(500).json({ error: 'Failed to initiate payment' });
         }
@@ -46,6 +54,8 @@ const initiateSSLPayment = catchAsync(async (req, res) => {
         res.status(500).json({ error: 'Payment initiation error', details: error });
     }
 });
+
+
 
 const paymentSuccess = catchAsync(async (req, res) => {
     res.json({ message: 'Payment successful', paymentDetails: req.body });

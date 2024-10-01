@@ -16,7 +16,7 @@ app.use("/api", ProductRoutes);
 app.use("/api", UserRoute);
 app.use("/api", WishlistRoute);
 app.use("/api", EmailRoute);
-app.use("/payment", PaymentRoute);
+app.use("/api", PaymentRoute);
 
 // Root route
 app.get('/', (req: Request, res: Response) => {
