@@ -8,43 +8,54 @@ generator client {
 }
 
 model Product {
-  id               Int      @id @default(autoincrement())
-  productName      String   // Renamed from 'name'
-  productImages    Json     // Stores array of images (e.g., imageId, imageUrl)
-  productRating    Float
-  offerExpires     DateTime
-  measurement      String
-  productOff       String
-  originalPrice    Float
-  offerPrice       Float
-  productCategory  String
-  isNewProduct     Boolean
-  color            Json     // Stores array of colors and their associated images
+  id                 Int      @id @default(autoincrement())
+  productName        String // Renamed from 'name'
+  productImages      Json // Stores array of images (e.g., imageId, imageUrl)
+  productRating      Float
+  offerExpires       DateTime
+  measurement        String
+  productOff         String
+  originalPrice      Float
+  offerPrice         Float
+  productCategory    String
+  isNewProduct       Boolean
+  color              Json // Stores array of colors and their associated images
   productDescription String? // Added optional description of the product
-  additionalInfo   Json     // Stores additional info like details, packaging as a JSON object
-  reviews          Json     // Stores array of reviews (e.g., customerName, rating, comment, customerImage)
+  additionalInfo     Json // Stores additional info like details, packaging as a JSON object
+  reviews            Json // Stores array of reviews (e.g., customerName, rating, comment, customerImage)
 }
 
 model User {
-  id                  Int       @id @default(autoincrement())
-  name                String
-  username            String    @unique
-  email               String    @unique
-  password            String
-  profileImage        String?   // Optional profile image field
-  totalPurchasesAmount Int      @default(0) // Total amount the user has spent
-  totalPurchases      Json      @default("[]") // Array of purchase IDs in JSON format
-  cardInfo            Json      @default("[]") // Array of Stripe card info in JSON format
-  address             Json?     @default("{}") // Shipping or billing addresses
-  phoneNumber         String?   // User's phone number
-  isVerified          Boolean   @default(false) // Email verification status
-  role                Role      @default(USER) // User role: Admin or User
-  wishlist            Json?     @default("[]") // Wishlist for saved products
-  lastLogin           DateTime? // Last login timestamp
-  createdAt           DateTime  @default(now())
+  id                   Int       @id @default(autoincrement())
+  name                 String
+  username             String    @unique
+  email                String    @unique
+  password             String
+  profileImage         String? // Optional profile image field
+  totalPurchasesAmount Int       @default(0) // Total amount the user has spent
+  totalPurchases       Json      @default("[]") // Array of purchase IDs in JSON format
+  cardInfo             Json      @default("[]") // Array of Stripe card info in JSON format
+  address              Json?     @default("{}") // Shipping or billing addresses
+  phoneNumber          String? // User's phone number
+  isVerified           Boolean   @default(false) // Email verification status
+  role                 Role      @default(USER) // User role: Admin or User
+  wishlist             Json?     @default("[]") // Wishlist for saved products
+  lastLogin            DateTime? // Last login timestamp
+  createdAt            DateTime  @default(now())
 }
+
+// schema.prisma
+
+model Image {
+    id        Int      @id @default(autoincrement())
+    url       String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
 
 enum Role {
   USER
   ADMIN
+  BOCKED
 }

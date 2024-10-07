@@ -6,5 +6,6 @@ router.post('/initiate', PaymentController.initiateSSLPayment);
 router.post('/success', PaymentController.paymentSuccess);
 router.post('/fail', PaymentController.paymentFail);
 router.post('/cancel', PaymentController.paymentCancel);
+router.post('/ipn', PaymentController.ipn);
 
 export const PaymentRoute = router;
