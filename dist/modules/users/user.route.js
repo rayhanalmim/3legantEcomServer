@@ -7,6 +7,7 @@ exports.UserRoute = void 0;
 const express_1 = __importDefault(require("express"));
 const user_service_1 = require("./user.service");
 const router = express_1.default.Router();
-router.post("/create-user", user_service_1.UserServices.Registration);
+// Route for user registration with image upload
+router.post("/create-user", user_service_1.UserServices.upload.single('profileImage'), user_service_1.UserServices.Registration);
 router.post("/log-in", user_service_1.UserServices.LogIn);
 exports.UserRoute = router;
