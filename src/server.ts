@@ -37,8 +37,6 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to the E-Commerce API');
 });
 
-// Start the server
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server running on http://localhost:${port}`);
 });
-
