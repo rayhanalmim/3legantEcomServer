@@ -10,7 +10,6 @@ import { UserRoute } from './modules/users/user.route';
 import { WishlistRoute } from './modules/wishList/wishlist.route';
 import { StripeRoute } from './modules/stripe/stripe.route';
 
-
 const app = express();
 const port = 3013;
 
@@ -23,7 +22,6 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }));
 // Serve static files (for image access)
 app.use("/uploads", express.static(path.join(__dirname, 'uploads')));
-
 
 app.use("/api", ProductRoutes);
 app.use("/api", UserRoute);
