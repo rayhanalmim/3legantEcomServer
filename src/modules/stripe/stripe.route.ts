@@ -1,8 +1,7 @@
 import express from "express";
-// import { EmailController } from "./email.controller";
-// import { ProductsController } from "./product.service";
+import { StripeController } from "./stripe.controller";
 const router = express.Router();
 
-router.post("/contract-sms-send", );
+router.post("/create-subscription", StripeController.payment);
 
 export const StripeRoute = router;

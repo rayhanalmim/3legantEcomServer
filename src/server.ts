@@ -8,6 +8,7 @@ import { ProductRoutes } from './modules/products/product.route';
 import { EmailRoute } from './modules/sendingEmail/email.route';
 import { UserRoute } from './modules/users/user.route';
 import { WishlistRoute } from './modules/wishList/wishlist.route';
+import { StripeRoute } from './modules/stripe/stripe.route';
 
 
 const app = express();
@@ -31,6 +32,7 @@ app.use("/api", EmailRoute);
 app.use("/payment", PaymentRoute);
 app.use("/api", MultiImageRoute);
 app.use("/api", NerRoute)
+app.use("/api", StripeRoute);
 
 // Root route
 app.get('/', (req: Request, res: Response) => {
