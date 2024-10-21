@@ -4,7 +4,7 @@ const Stripe = require('stripe');
 const prisma = new PrismaClient();
 
 // Replace with your Stripe Secret Key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe("sk_test_51QCEQyP8UcLxbKnCosBh1PeLlk7yKSNtkoaERiMTqfJDKZLPXekSzsQaXZ3099U9EWHZT5DjJt97QXmT52TlAu4U00CJoNvgCt");
 
 const payment = catchAsync(async (req, res) => {
     const { email, paymentMethodId } = req.body;
@@ -22,14 +22,15 @@ const payment = catchAsync(async (req, res) => {
     // Create the subscription with a 7-day trial
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
-      items: [{ price: process.env.STRIPE_PRICE_ID }], // Replace with your actual price ID
+      items: [{ price: 'price_1QCFbqP8UcLxbKnCNbrWRm7e' }], // Your Price ID here
       trial_period_days: 7, // Set the trial period for 7 days
       expand: ['latest_invoice.payment_intent'], // Expand to get the payment intent for status
     });
 
+    console.log(subscription);
     res.status(200).json({
-      subscriptionId: subscription.id,
-      clientSecret: subscription.latest_invoice.payment_intent.client_secret,
+      subscriptionId: subscription?.id,
+      clientSecret: subscription?.latest_invoice,
     });
   } catch (error) {
     const errorMessage = (error as any).message;
