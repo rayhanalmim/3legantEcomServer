@@ -10,7 +10,7 @@ const payment = catchAsync(async (req, res) => {
     const { email, paymentMethodId } = req.body;
 
   try {
-    // Create a customer in Stripe
+    // Create a new customer in Stripe
     const customer = await stripe.customers.create({
       payment_method: paymentMethodId,
       email: email,
@@ -19,12 +19,12 @@ const payment = catchAsync(async (req, res) => {
       },
     });
 
-    // Create the subscription with a 7-day trial period
+    // Create the subscription with a 7-day trial
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
       items: [{ price: process.env.STRIPE_PRICE_ID }], // Replace with your actual price ID
-      trial_period_days: 7,
-      expand: ['latest_invoice.payment_intent'],
+      trial_period_days: 7, // Set the trial period for 7 days
+      expand: ['latest_invoice.payment_intent'], // Expand to get the payment intent for status
     });
 
     res.status(200).json({
